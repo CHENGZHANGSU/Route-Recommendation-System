@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compitable" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" type="image/x-icon" href="geek.ico">
+    <title>Map System</title>
+    <style>
+        button {
+        width: 300px;
+        font-size: 20px;
+        padding: 7px;
+        border-radius: 40px;
+        color: black;
+        cursor: pointer;
+        margin: 20px;
+        }
+        #container{
+            position: fixed;
+            top: 20%;
+            left: 40%;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="position: relative; left: 35%; padding: 10px;">Welcome</h1>
+
+    <p style="position: relative; left: 130px;">Access Time: <%= Date() %></p>
+      
+    <style>
+        body {
+            background-image: url('Mode.jpg');
+        }
+        </style>
+    <div id = "container">
+        <form action="/login">
+            <button id="container" type= "submit">Start Your Journey!🙂</button>
+          </form>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>Surrounded Places</title>
+    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" href="geek.ico">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        #panel {
+            position: fixed;
+            z-index: 1;
+            background-color: white;
+            max-height: 90%;
+            overflow-y: auto;
+            top: 10px;
+            right: 10px;
+            width: 280px;
+            border-bottom: solid 1px silver;
+        }
+        #myPageTop {
+	        position: absolute;
+	        top: 5px;
+	        left: 10px;
+            z-index: 1;
+	        background: #fff none repeat scroll 0 0;
+	        border: 1px solid #ccc;
+	        margin: 10px auto;
+	        padding:6px;
+	        font-family: "Microsoft Yahei", "微软雅黑", "Pinghei";
+	        font-size: 14px;
+        }
+        #myPageTop label {
+	        margin: 0 20px 0 0;
+	        color: #666666;
+	        font-weight: normal;
+        }
+        #myPageTop input {
+	        width: 170px;
+        }
+        #myPageTop .column2{
+	        padding-left: 25px;
+        }
+    </style>
+    
+<script type="text/javascript">
+	window._AMapSecurityConfig = {
+	  securityJsCode: "f6b242cd04daebb47685da20c645bd53",
+	};
+  </script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=c3f65892c3589481fd26d92b375055e0&plugin=AMap.Geocoder"></script>
+    <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+</head>
+<body>
+<div id="myPageTop">
+
+    <button onclick="searchfunction()">Submit</button>
+    <label>Preferences:</label>
+    <input id="praferences" value="">
+    <label>Preferences Lat:</label>
+    <input id="preferences" value="">
+    <label>Preferences Lng:</label>
+    <input id="proferences" value="">
+    <label>Type of Causal: 餐饮服务， 购物服务， 生活服务， 体育休闲服务， 风景名胜， 住宿服务</label>
+
+</div>
+
+<form action="/mapc" method="get">
+    <button type="submit" class="btn btn-info" style="position: relative; top: 60px; left: 10px; z-index: 1;">Back</button>
+</form>
+
+<div id="container"></div>
+<div id="panel"></div>
+<script type="text/javascript">
+function searchfunction(){
+
+    var value0 = document.getElementById('praferences').value;
+    var value1 = document.getElementById('preferences').value;
+    var value2 = document.getElementById('proferences').value;
+    alert("Your Preference:" + value0 + " "+ value1 + " " + value2);
+
+    var map = new AMap.Map("container", {
+        resizeEnable: true
+    });
+    AMap.plugin(["AMap.PlaceSearch"], function() {
+        //Construct a location query class
+        var placeSearch = new AMap.PlaceSearch({ 
+            type: value0, // Point of interest categories
+            pageSize: 5, // Number of results displayed per page
+            pageIndex: 1, // pagenumber
+            city: "060", // Points of Interest Cities
+            citylimit: true,  //Whether to restrict searches to the specified city
+            map: map, // Map example showing the results
+            panel: "panel", // The result list will be displayed in this container.
+            autoFitView: true // Whether to automatically adjust the map view so that all drawn. Marker points are within the visible range of the viewport
+        });
+        
+        var cpoint = [value1,value2]; //Center point
+        placeSearch.searchNearBy('', cpoint, 500, function(status, result) {
+
+        });
+    });
+}
+</script>
+</body>
+</html>

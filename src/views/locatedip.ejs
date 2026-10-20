@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>Location</title>
+      <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+      <link rel="icon" type="image/x-icon" href="geek.ico">
+    <style>
+        html,body,#container{
+            height:100%;
+        }
+        .info{
+            width:26rem;
+        }
+    </style>
+</head>
+<body>
+
+<div id="tap" class='info' style='min-width:18rem;'></div>
+
+<div id="container">
+    <input type="text" id="tipinput" placeholder="Enter your location for weather...">
+    <input id='stationKeyWord' type="text" value='' placeholder="Bus stop..." >
+    <button id="tip" onclick="dealSearch()" type="submit">Search</button>
+    <button onclick="history.back()">Back</button>
+</div>
+
+
+<div class="info">
+    <h4 id="status"></h4><hr>
+    <p id="result"></p><hr>
+    <p >Notice: https will be more accurate!</p>
+</div>
+<script type="text/javascript">
+    window._AMapSecurityConfig = {
+      securityJsCode: "f6b242cd04daebb47685da20c645bd53",
+    };
+</script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=c3f65892c3589481fd26d92b375055e0"></script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=c3f65892c3589481fd26d92b375055e0&plugin=AMap.StationSearch"></script>
+
+<script type="text/javascript">
+
+function dealSearch(){
+
+    var value6 = document.getElementById('tipinput').value;
+    var value7 = document.getElementById('stationKeyWord').value;
+    alert("Your position is " + value6 + "\n" + "The bus stop is around " + value7);
+
+    var map = new AMap.Map('container', {
+        resizeEnable: true
+    });
+    AMap.plugin('AMap.Geolocation', function() {
+        var geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true,//high accuracy located
+            timeout: 10000,          //exceeding 10s will be considered as failure
+            position:'RB',    //location of the located button
+            offset: [10, 20], //location button and the top left corner
+            zoomToAccuracy: true,   //zoom to the location located
+
+        });
+        map.addControl(geolocation);
+        geolocation.getCurrentPosition(function(status,result){
+            if(status=='complete'){
+                onComplete(result)
+            }else{
+                onError(result)
+            }
+        });
+    });
+
+
+    //Analysis of the location results
+    function onComplete(data) {
+
+        document.getElementById('status').innerHTML='Successfully located'
+        var str = [];
+        str.push('Located result: ' + data.position);
+        str.push('Located types: ' + data.location_type);
+        if(data.accuracy){
+             str.push('Accuracy: ' + data.accuracy + ' meters');
+        }//If IP is accurate, no need for accuracy
+        str.push('Shift or not: ' + (data.isConverted ? 'Yes' : 'No'));
+        document.getElementById('result').innerHTML = str.join('<br>');
+
+        AMap.plugin('AMap.Weather', function() {
+        var weather = new AMap.Weather();
+        //Inquire of real-time weather, the city/district name is optional
+        weather.getLive(value6, function(err, data) {
+            if (!err) {
+                var str = [];
+                str.push('<h4 >Real-time weather: ' + '</h4><hr>');
+                str.push('<p>City/District: ' + data.city + '</p>');
+                str.push('<p>Weather: ' + data.weather + '</p>');
+                str.push('<p>Temperature: ' + data.temperature + '℃</p>');
+                str.push('<p>Wind direction: ' + data.windDirection + '</p>');
+                str.push('<p>Wind Strength: ' + data.windPower + ' Level</p>');
+                str.push('<p>Humidity: ' + data.humidity + '</p>');
+                str.push('<p>Released time: ' + data.reportTime + '</p>');
+                var marker = new AMap.Marker({map: map, position: map.getCenter()});
+                var infoWin = new AMap.InfoWindow({
+                    content: '<div class="info" style="position:inherit;margin-bottom:0;">'+str.join('')+'</div><div class="sharp"></div>',
+                    isCustom:true,
+                    offset: new AMap.Pixel(0, -37)
+                });
+                infoWin.open(map, marker.getPosition());
+                marker.on('mouseover', function() {
+                    infoWin.open(map, marker.getPosition());
+                });
+            }
+        });
+    });
+    }
+
+    //Analysis of the location failure
+    function onError(data) {
+        document.getElementById('status').innerHTML='Fail to locate'
+        document.getElementById('result').innerHTML = 'Reasons of failure:'+data.message+'</br>Callback information from browser: '+data.originMessage;
+    }
+
+
+    var markers = [];
+	stationSearch();
+
+    //bus stop searching
+    function stationSearch() {
+
+        // Remove all the Marker
+        map.remove(markers);
+
+        markers = [];
+        var stationKeyWord  = document.getElementById('stationKeyWord').value
+        if(!stationKeyWord) return
+
+        //Instantiate the bus stop query class
+        var station = new AMap.StationSearch({
+            pageIndex: 1, //page number
+            pageSize: 60, //display the number of results per page
+            city: ''   //ensure the search is within the city
+        });
+
+        station.search(stationKeyWord, function(status, result) {
+
+            if (status === 'complete' && result.info === 'OK') {
+                stationSearch_CallBack(result);
+            } else {
+                document.getElementById('tap').innerHTML = JSON.stringify(result);
+            }
+        });
+
+    }
+
+
+    //analysis of the search results of bus stop
+    function stationSearch_CallBack(searchResult) {
+
+        var stationArr = searchResult.stationInfo;
+        var searchNum = stationArr.length;
+        
+        if (searchNum > 0) {
+            document.getElementById('tap').innerHTML = 'Inquire results: ' + searchNum + 'related bus stops';
+            for (var i = 0; i < searchNum; i++) {
+
+                var marker = new AMap.Marker({
+                    icon:new AMap.Icon({
+                       image:'//a.amap.com/jsapi_demos/static/resource/img/pin.png',
+                       size:new AMap.Size(32,32),
+                       imageSize:new AMap.Size(32,32)
+                    }),
+
+                    offset:new AMap.Pixel(-16,-32),
+                    position: stationArr[i].location,
+                    map: map,
+                    title: stationArr[i].name
+                });
+
+                marker.info = new AMap.InfoWindow({
+                    content: stationArr[i].name,
+                    offset: new AMap.Pixel(0, -30)
+                });
+
+                marker.on('mouseover', function(e) {
+                    e.target.info.open(map, e.target.getPosition())
+                })
+
+                markers.push(marker);
+            }
+
+            map.setFitView();
+        }
+    } 
+    
+    document.getElementById('tip').onclick = stationSearch;
+}
+
+
+
+</script>
+</body>
+</html>

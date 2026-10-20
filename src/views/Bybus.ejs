@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <link rel="icon" type="image/x-icon" href="geek.ico">
+  <title>Bus Route</title>
+  <style type="text/css">
+    html,
+    body,
+    #container {
+      width: 100%;
+      height: 100%;
+    }
+
+    #panel {
+      position: fixed;
+      background-color: white;
+      max-height: 90%;
+      overflow-y: auto;
+      top: 10px;
+      right: 10px;
+      width: 280px;
+    }
+
+    #panel .amap-call {
+      background-color: #009cf9;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+    }
+
+    #panel .amap-lib-driving {
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      overflow: hidden;
+    }
+
+    #myPageTop {
+	    position: absolute;
+	    top: 5px;
+	    left: 10px;
+	    background: #fff none repeat scroll 0 0;
+	    border: 1px solid #ccc;
+	    margin: 10px auto;
+	    padding:6px;
+	    font-family: "Microsoft Yahei", "微软雅黑", "Pinghei";
+	    font-size: 14px;
+    }
+    
+    #myPageTop label {
+	    margin: 0 20px 0 0;
+	    color: #666666;
+	    font-weight: normal;
+    }
+
+    #myPageTop input {
+	    width: 130px;
+    }
+
+    #myPageTop .column2{
+	    padding-left: 25px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+  <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
+  <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+</head>
+
+<body>
+
+<form action="/map">
+  <button type="submit" style="position: relative; top: 100px; left: 15px;">Back</button>
+</form>
+
+<div id="myPageTop">
+    <form action="/auth/travellinghistory" method="POST">
+      <button type="submit">Record</button>
+
+      <label for="">Begin Lat: </label>
+      <input id="tipinput"  value="" name="tipinput">
+
+      <label for="">Begin Log: </label>
+      <input id="tepinput"  value="" name="tepinput">
+
+      <label for="">Destination Lat: </label>
+      <input id="topinput"  value="" name="topinput">
+
+      <label for="">Destination Log: </label>
+      <input id="twpinput"  value="" name="twpinput">
+
+      <label for="">Travelling mode: (LEAST_TIME,LEAST_FEE,NO_SUBWAY)</label>
+      <input id="choice"  value="" name="choice">
+    </form>
+    <button onclick="conductSearch()">Forward</button>
+</div>
+
+
+
+
+<script type="text/javascript">
+        window._AMapSecurityConfig = {
+          securityJsCode: "f6b242cd04daebb47685da20c645bd53",
+        };
+</script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=c3f65892c3589481fd26d92b375055e0&plugin=AMap.Transfer"></script>
+
+<div id="container"></div>
+<div id="panel"></div>
+
+
+<script type="text/javascript">
+
+function conductSearch(){
+
+    var value1 = document.getElementById('tipinput').value;
+    var value2 = document.getElementById('tepinput').value;
+    var value3 = document.getElementById('topinput').value;
+    var value4 = document.getElementById('twpinput').value;
+    var value5 = document.getElementById('choice').value;
+    alert(value1+ "," + value2 + "," + value3 + "," + value4 + "\n*" + "The travelling mode is " + value5);
+
+    var map = new AMap.Map("container", {
+      resizeEnable: true,
+      center: [116.397428, 39.90923],
+      zoom: 13 //Display zoom level
+    });
+    var transOptions = {
+      map: map,
+      city: '佛山市',
+      panel: 'panel',
+      //cityd:'',
+      policy: AMap.TransferPolicy.value5,
+    };
+    //Construct bus transfer class
+    var transfer = new AMap.Transfer(transOptions);
+    //Construct route according to the starting point and destination point
+    transfer.search(new AMap.LngLat(value1, value2), new AMap.LngLat(value3, value4), function (status, result) {
+      // result is the type of data  https://lbs.amap.com/api/javascript-api/reference/route-search#m_TransferResult
+      if (status === 'complete') {
+        map.setCenter([value1, value2])
+        log.success('successfully create bus route')
+      } else {
+        log.error('Fail to create the bus route' + result)
+      }
+    });
+}
+
+  </script>
+</body>
+
+</html>

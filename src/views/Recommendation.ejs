@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="refresh" content="2"> -->
+    <title>Recommendation of famous scenic spots</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" href="geek.ico">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        header {
+            z-index: 0;
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        section {
+            padding: 20px;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        .destination {
+            background-color: white;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .destination img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .destination p {
+            font-size: 1rem;
+            color: #555;
+        }
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .pagination {
+            text-align: center;
+            padding: 10px 0;
+        }
+        .pagination a {
+            text-decoration: none;
+            color: #2c3e50;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: 1px solid #2c3e50;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .pagination a:hover {
+            background-color: #34495e;
+            color: white;
+            cursor: pointer;
+        }
+        .pagination a:active {
+            background-color: #2c3e50;
+        }
+        .more-link {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+        .more-link:hover {
+            text-decoration: underline;
+        }
+        .button {
+            display: inline-block;
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #04AA6D;
+            border: none;
+            /* box-shadow: 0 9px #999; */
+            position: relative;
+            left: 85%;
+            top: 6px;
+        }
+        /* .button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        } */
+        .button:hover {background-color: #3e8e41}
+
+        #myPageTop {
+	        position: absolute;
+	        top: 5px;
+	        right: 10px;
+	        background: #fff none repeat scroll 0 0;
+	        border: 1px solid #ccc;
+	        margin: 10px auto;
+	        padding:6px;
+	        font-family: "Microsoft Yahei", "微软雅黑", "Pinghei";
+	        font-size: 14px;
+        }
+        #myPageTop label {
+	        margin: 0 20px 0 0;
+	        color: #666666;
+	        font-weight: normal;
+        }
+        #myPageTop input {
+	        width: 170px;
+        }
+        #myPageTop .column2{
+	        padding-left: 25px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Recommended Famouns Scenic Spots</h1>
+    </header>
+
+    <form action="/auth/favourite" method="post">
+        <input id="tipinput" name="tipinput" class="tipinput" type="text" placeholder="Record you favourite..." style="position: relative; left: 86%; top:6px; padding: 4px;">
+        <button type="submit" class="button">Store</button>
+    </form>
+
+    <form action="/home" method="get">
+        <button type="submit" class="btn btn-info" style="position:relative; bottom: 26px; left: 10px; ">Back</button>
+    </form>
+
+    
+    <section id="page1">
+        <!-- Page 1 -->
+        <div class="destination">
+            <h2>长城</h2>
+            <img src="https://p1.ssl.qhmsg.com/t01de281851cb09666d.jpg" alt="长城">
+            <a href="https://zh.wikipedia.org/wiki/%E9%95%BF%E5%9F%8E" class="more-link">更多</a>
+        </div>
+        <div class="destination">
+            <h2>故宫</h2>
+            <img src="https://ts1.tc.mm.bing.net/th/id/R-C.246e71aad3772cb31c96ffad3bfe0d17?rik=c9Jua%2bJlpltMKA&riu=http%3a%2f%2fn.sinaimg.cn%2fsinakd20210218ac%2f120%2fw1440h1080%2f20210218%2f5dd5-kkciesr2099875.jpg&ehk=w3nsnS%2biBN59FiI%2fFFaoGR8LwiyER4JormACP8zGsxw%3d&risl=&pid=ImgRaw&r=0" alt="故宫">
+            <a href="https://zh.wikipedia.org/wiki/%E6%95%85%E5%AE%AB" class="more-link">更多</a>
+        </div>
+
+        <div class="destination">
+            <h2>北京博物馆</h2>
+            <img src="https://n.sinaimg.cn/sinakd10111/135/w1110h625/20210401/b06b-knaqvqp0181373.jpg" alt="北京博物馆">
+            <a href="https://www.chnmuseum.cn/" class="more-link">更多</a>
+        </div>
+
+        <div class="pagination">
+            <a href="#" class="next" data-target="page2">下一页</a>
+        </div>
+    </section>
+
+    <section id="page2" style="display:none;">
+        <!-- Page 2 -->
+        <div class="destination">
+            <h2>黄山</h2>
+            <img src="https://youimg1.c-ctrip.com/target/0104a120008ah3n3q93E0_D_10000_1200.jpg?proc=autoorient" alt="黄山">
+            <a href="https://zh.wikipedia.org/wiki/%E9%BB%84%E5%B1%B1" class="more-link">更多</a>
+        </div>
+        <div class="destination">
+            <h2>西湖</h2>
+            <img src="https://ts1.tc.mm.bing.net/th/id/R-C.17b13dabedf3612be20ce643bdd36973?rik=wR9nHAhK01ly%2fQ&riu=http%3a%2f%2fimg.pconline.com.cn%2fimages%2fupload%2fupc%2ftx%2fphotoblog%2f1208%2f24%2fc5%2f13180459_13180459_1345797688052.jpg&ehk=bQ%2b8S%2b%2bbvuV%2bKerPzQMA%2fUoSAzBhIK63EMjKarMPaio%3d&risl=&pid=ImgRaw&r=0" alt="西湖">
+            <a href="https://zh.wikipedia.org/wiki/%E8%A5%BF%E6%B9%96" class="more-link">更多</a>
+        </div>
+
+        <div class="pagination">
+            <a href="#" class="prev" data-target="page1">上一页</a>
+            <a href="#" class="next" data-target="page3">下一页</a>
+        </div>
+    </section>
+
+    <section id="page3" style="display:none;">
+        <!-- Page 3 -->
+        <div class="destination">
+            <h2>泰山</h2>
+            <img src="https://p6.itc.cn/images01/20210303/59cad55318f34cce8ce2fe86285d9440.jpeg" alt="泰山">
+            <a href="https://zh.wikipedia.org/wiki/%E6%B3%B0%E5%B1%B1" class="more-link">更多</a>
+        </div>
+        <div class="destination">
+            <h2>丽江古城</h2>
+            <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/16/fe/c6/lijiang-old-town.jpg?w=1200&h=1200&s=1" alt="丽江古城">
+            <a href="https://zh.wikipedia.org/wiki/%E4%B8%BD%E6%B1%9F%E5%8F%A4%E5%9F%8E" class="more-link">更多</a>
+        </div>
+
+        <div class="pagination">
+            <a href="#" class="prev" data-target="page2">上一页</a>
+        </div>
+    </section>
+
+    <script>
+        const pageLinks = document.querySelectorAll('.pagination a');
+
+        pageLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                const targetPage = link.getAttribute('data-target');
+                const currentPage = link.closest('section');
+
+                currentPage.style.display = 'none';
+
+                document.getElementById(targetPage).style.display = 'block';
+            });
+        });
+        document.getElementById('page1').style.display = 'block';
+    </script>
+</body>
+</html>

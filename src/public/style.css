@@ -1,0 +1,30 @@
+body{
+    max-width: 800px;
+    margin: auto;
+    min-height: 100vh;
+    color: #ffffff;
+}
+
+img{
+    width: 80%;
+}
+
+ul{
+    list-style-type: none;
+    padding: 0%;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+span {
+    display: inline-block;
+}
+td {
+    width: 15em;
+    border: 1px solid red;
+}
+
+
